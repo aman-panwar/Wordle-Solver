@@ -52,16 +52,15 @@ def enter_guess(word):
     sleep(2)
 
 
-try:
-    browser.find_element(By.XPATH, '//html').click()
-    sleep(1)
-finally:
-    for turn in range(6):
-        guess = get_guess()
-        enter_guess(guess)
-        result = get_result()
-        if result == 'GGGGG':
-            break
-        words = solver.filter_words(words=words, guess=guess,
-                                    result=result, dict=dict)
-        words = solver.rate_words(words, dict=dict)
+
+browser.find_element(By.XPATH, '//html').click()
+sleep(1)
+for turn in range(6):
+    guess = get_guess()
+    enter_guess(guess)
+    result = get_result()
+    if result == 'GGGGG':
+        break
+    words = solver.filter_words(words=words, guess=guess,
+                                result=result, dict=dict)
+    words = solver.rate_words(words, dict=dict)
