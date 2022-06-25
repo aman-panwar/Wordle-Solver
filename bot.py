@@ -9,16 +9,9 @@ import solver
 
 
 words = solver.get_words()
-dict = solver.get_word_result_dict(words)
 
 browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 browser.get('https://www.nytimes.com/games/wordle/index.html')
-
-game = browser.find_element(By.TAG_NAME, 'game-app')
-board = browser.execute_script(
-    "return arguments[0].shadowRoot.getElementById('board')", game)
-rows = board.find_elements(By.TAG_NAME, 'game-row')
-
 
 def get_guess():
     if len(words) == 0:
@@ -26,18 +19,16 @@ def get_guess():
     return words[0]
 
 
-def get_result():
+def get_result(turn):
     result = ""
-    row = browser.execute_script(
-        'return arguments[0].shadowRoot', rows[turn])
-    tiles = row.find_elements(By.CSS_SELECTOR, "game-tile")
-    evalutation = {
+    tile_to_str = {
         "correct": 'G',
         "present": 'Y',
         "absent": 'W'
     }
-    for tile in tiles:
-        result = result + evalutation[tile.get_attribute("evaluation")]
+    for col in range(1,6):
+        tile  = browser.find_element(By.XPATH, '//*[@id="wordle-app-game"]/div[1]/div/div[{row}]/div[{col}]/div'.format(row = turn,col = col))
+        result = result + tile_to_str[tile.get_attribute('data-state')]
     return result
 
 
@@ -55,12 +46,12 @@ def enter_guess(word):
 
 browser.find_element(By.XPATH, '//html').click()
 sleep(1)
-for turn in range(6):
+for turn in range(1,7):
     guess = get_guess()
     enter_guess(guess)
-    result = get_result()
+    result = get_result(turn)
     if result == 'GGGGG':
         break
     words = solver.filter_words(words=words, guess=guess,
-                                result=result, dict=dict)
-    words = solver.rate_words(words, dict=dict)
+                                result=result)
+    words = solver.rate_words(words)
