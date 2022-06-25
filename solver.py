@@ -39,14 +39,6 @@ def get_score(word, words):
 
     return score
 
-
-def rate_words(words):
-    rated_words = [(w, get_score(word=w, words=words))
-                   for w in words]
-    rated_words.sort(key=lambda c: c[1], reverse=True)
-    return list(map(lambda x: x[0], rated_words))
-
-
 def filter_words(words, guess, result):
     new_words = [w for w in words if compare(w, guess) == result]
     return new_words
@@ -69,26 +61,32 @@ def take_input():
     return res
 
 
+def rate_words(words):
+    if len(words) ==0:
+        return []
+    rated_words = [(w, get_score(word=w, words=words)) for w in words]
+    index = rated_words.index(max(rated_words, key=lambda c: c[1]))
+    rated_words[index], rated_words[0] = rated_words[0], rated_words[index]
+    return [w[0] for w in rated_words]
+
+
 def main():
     words = get_words()
-
-    for turn in range(1, 7):
-        if len(words) == 0:
-            print('error occured: no word found')
-            break
-
-        guess = words[0]
-        print('current guess: ' + guess +
-              '\t\t(other possible words: '+str(len(words)-1)+')')
-        result = take_input()
-        if result == 'GGGGG':
-            print('yayy!')
-            break
-        words = filter_words(words=words, guess=guess,result=result)
-        words = rate_words(words)
-        if turn == 6:
-            print('failed :(')
-
+    try:
+        for turn in range(1, 7):
+            guess = words[0]
+            print('current guess: ' + guess +
+                '\t\t(other possible words: '+str(len(words)-1)+')')
+            result = take_input()
+            if result == 'GGGGG':
+                print('yayy!')
+                break
+            words = filter_words(words=words, guess=guess, result=result)
+            words = rate_words(words)
+            if turn == 6:
+                print('ran out of turns :(')
+    except:
+        print('failed to guess word')
 
 if __name__ == "__main__":
     main()
