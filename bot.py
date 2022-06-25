@@ -9,7 +9,6 @@ import solver
 
 
 words = solver.get_words()
-dict = solver.get_word_result_dict(words)
 
 browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 browser.get('https://www.nytimes.com/games/wordle/index.html')
@@ -62,5 +61,5 @@ for turn in range(6):
     if result == 'GGGGG':
         break
     words = solver.filter_words(words=words, guess=guess,
-                                result=result, dict=dict)
-    words = solver.rate_words(words, dict=dict)
+                                result=result)
+    words = solver.rate_words(words)
