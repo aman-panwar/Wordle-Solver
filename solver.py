@@ -6,7 +6,7 @@ from math import log2
 def compare(prim, test):
     # prim is the primary words and test is the words we test against prim
     # return a 5 letter string, representing the output according to wordle rules
-    result = "-----"
+    result = ""
 
     for i in range(5):
         color = ''
@@ -19,7 +19,7 @@ def compare(prim, test):
             prim = prim[:index] + '-' + prim[index+1:]
         elif test[i] not in prim:  # GRAY
             color = 'W'
-        result = result[:i] + color + result[i+1:]
+        result += color
 
     return result
 

@@ -1,3 +1,4 @@
 links.txt
-testing.py
 progress_bar.py
+testing.py
+/__pycache__/*
