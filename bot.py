@@ -44,7 +44,7 @@ def enter_guess(word):
 
 
 
-browser.find_element(By.XPATH, '//html').click()
+browser.find_element(By.XPATH, '//*[@id="wordle-app-game"]/div[3]/div/div').click()
 sleep(1)
 for turn in range(1,7):
     guess = get_guess()
