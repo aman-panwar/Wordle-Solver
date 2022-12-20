@@ -12,7 +12,7 @@ import solver
 words = solver.get_words()
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
-browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options =chrome_options)
+browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options =chrome_options)
 browser.get('https://www.nytimes.com/games/wordle/index.html')
 
 def get_guess():
